@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+
+
 /**
  * Created by LaunchCode
  */
@@ -77,12 +79,14 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
-            if (aValue.contains(value)) {
+            if (aValue.contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
+
+
 
         return jobs;
     }
@@ -94,13 +98,22 @@ public class JobData {
      * @return      List of all jobs with at least one field containing the value
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
-
         // load data, if not already loaded
         loadData();
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+            for (HashMap<String, String> row: allJobs) {
+                for (HashMap.Entry<String, String> posting: row.entrySet()) {
+                    if (posting.getValue().toLowerCase().contains(value.toLowerCase())) {
+                        jobs.add(row);
+                    }
+                };
+            }
+
 
         // TODO - implement this method
-        return null;
+        return jobs; //add sort
     }
+
 
     /**
      * Read in data from a CSV file and store it in a list
@@ -142,5 +155,4 @@ public class JobData {
             e.printStackTrace();
         }
     }
-
 }
